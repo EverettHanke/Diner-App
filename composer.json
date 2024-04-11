@@ -1,0 +1,12 @@
+{
+  "name": "everetth/SDEV328/Diner-App",
+  "authors": [
+    {
+      "name": "Everett Hanke",
+      "email": "hanke.everett@student.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
