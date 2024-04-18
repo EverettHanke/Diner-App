@@ -54,8 +54,8 @@ $f3->route('GET /menu/diner', function (){
 });
 
 //route for order for part 1 menu
-$f3->route('GET /orders/form1', function (){
-    //echo '<h1>Diner</h1>';
+$f3->route('GET /order1', function (){
+    //echo '<h1>Order 1</h1>';
 
     //Render a view page
     $view = new Template();
@@ -63,8 +63,8 @@ $f3->route('GET /orders/form1', function (){
 });
 
 //route for order form part 2 menu
-$f3->route('GET /orders/form2', function (){
-    //echo '<h1>Diner</h1>';
+$f3->route('GET /order2', function (){
+    //echo '<h1>Order 2</h1>';
 
     //Render a view page
     $view = new Template();
