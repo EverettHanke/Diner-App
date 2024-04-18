@@ -53,5 +53,22 @@ $f3->route('GET /menu/diner', function (){
     echo $view->render('views/diner-menu.html');
 });
 
+//route for order for part 1 menu
+$f3->route('GET /orders/form1', function (){
+    //echo '<h1>Diner</h1>';
+
+    //Render a view page
+    $view = new Template();
+    echo $view->render('views/order1.html');
+});
+
+//route for order form part 2 menu
+$f3->route('GET /orders/form2', function (){
+    //echo '<h1>Diner</h1>';
+
+    //Render a view page
+    $view = new Template();
+    echo $view->render('views/order2.html');
+});
 //run Fat Free
 $f3->run();
