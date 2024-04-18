@@ -28,6 +28,30 @@ $f3->route('GET /', function (){
     $view = new Template();
     echo $view->render('views/home.html');
 });
+//route for breakfast menu
+$f3->route('GET /menu/breakfast', function (){
+    //echo '<h1>Breakfast</h1>';
+
+    //Render a view page
+    $view = new Template();
+    echo $view->render('views/breakfast-menu.html');
+});
+//route for lunch menu
+$f3->route('GET /menu/lunch', function (){
+    //echo '<h1>Lunch</h1>';
+
+    //Render a view page
+    $view = new Template();
+    echo $view->render('views/lunch-menu.html');
+});
+//route for diner menu
+$f3->route('GET /menu/diner', function (){
+    //echo '<h1>Diner</h1>';
+
+    //Render a view page
+    $view = new Template();
+    echo $view->render('views/diner-menu.html');
+});
 
 //run Fat Free
 $f3->run();
