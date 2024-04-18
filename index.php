@@ -67,12 +67,17 @@ $f3->route('GET|POST /order1', function ($f3){
         //get the data from post array
         $food = $_POST['food'];
         $meal = $_POST['meal'];
-        if (true)
+        if (!empty($food)&&!empty($meal)) //basic check
         {
             //get data out of post array and put it in session array
             $f3->set('SESSION.food', $food);
             $f3->set('SESSION.meal', $meal);
-
+            //send us to page 2
+            $f3->reroute('order2');
+        }
+        else //invalid
+        {
+            echo "<p>Validation Errors</p>"; //Temporary
         }
     }
     else
@@ -85,10 +90,11 @@ $f3->route('GET|POST /order1', function ($f3){
 });
 
 //route for order form part 2 menu
-$f3->route('GET /order2', function (){
+$f3->route('GET|POST /order2', function ($f3){
     //echo '<h1>Order 2</h1>';
-
+    var_dump($f3->get('SESSION'));
     //Render a view page
+    if ($_SERVER['REQUEST_METHOD'] == "POST")
     $view = new Template();
     echo $view->render('views/order2.html');
 });
