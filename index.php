@@ -54,9 +54,31 @@ $f3->route('GET /menu/diner', function (){
 });
 
 //route for order for part 1 menu
-$f3->route('GET /order1', function (){
+$f3->route('GET|POST /order1', function ($f3){
     //echo '<h1>Order 1</h1>';
 
+    //if the form has been posted
+    if ($_SERVER['REQUEST_METHOD'] == "POST")
+    {
+        echo "<p>You got here with the POST method</p>";
+        //lets vardump it
+        //var_dump($_POST);
+        //check if the data is valid
+        //get the data from post array
+        $food = $_POST['food'];
+        $meal = $_POST['meal'];
+        if (true)
+        {
+            //get data out of post array and put it in session array
+            $f3->set('SESSION.food', $food);
+            $f3->set('SESSION.meal', $meal);
+
+        }
+    }
+    else
+    {
+        echo "<p>You got her with the GET method</p>";
+    }
     //Render a view page
     $view = new Template();
     echo $view->render('views/order1.html');
