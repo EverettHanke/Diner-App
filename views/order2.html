@@ -5,19 +5,16 @@
     <h1>My Diner</h1>
     <h2>Order Part 2</h2>
 
-    <form action="#" method="get" class="form-horizontal">
+    <form action="#" method="post" class="form-horizontal">
 
         <!-- get food -->
-
-        <br>
-
-        <!-- get meal -->
         <div class="form-group">
-            <label class="col-sm-4 control-label">Select your condiments</label>
+            <label class="col-sm-4 control-label">Select your Condiments</label>
+
             <div class="col-sm-4">
-                <label><input type="checkbox" name="conds[]" value="ketchup">Trung Den</label><br>
-                <label><input type="checkbox" name="conds[]" value="mustard">Mustard</label><br>
-                <label><input type="checkbox" name="conds[]" value="sriracha">Sriracha</label><br>
+                <repeat group="{{ @condi }}" value="{{ @condiValue }}">
+                    <label><input type="checkbox" name="conds[]" value="{{ @condiValue }}">{{ ucfirst(@condiValue) }}</label><br>
+                </repeat>
             </div>
         </div>
         <br>
