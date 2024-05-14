@@ -9,36 +9,18 @@ error_reporting(E_ALL);
 
 //Require
 require_once ('vendor/autoload.php');
+require_once ('controller/controller.php');
 
-//test the datalayer class
-//var_dump(DataLayer::getCondiments());
-//var_dump(DataLayer::getMeals());
-//require_once ('classes/order.php'); no longer needed as the composer handles it via autoload
-//var_dump(getMeals());
-//$testfood = '   xy   ';
-//echo validFood($testfood) ? "valid": "not valid";
-//var_dump(validFood($testfood));
 
 //instantiate the F3 base class (F3 is fat free framework)
 $f3 = Base::instance();
-
-/* commented out because we can only run once.
-Should be at end of the program.
-this is a warning for future self.
-//run Fat Free
-$f3->run();
-*/
-
-//$order = new Order('pad thai', 'lunch', ['soy sauce']);
-//var_dump($order);
+$con = new Controller($f3);
 
 //Define a default route
 $f3->route('GET /', function (){
     //echo '<h1>Hello Fat-Free</h1>';
-
     //Render a view page
-    $view = new Template();
-    echo $view->render('views/home.html');
+   $GLOBALS['con']->home();
 });
 //route for breakfast menu
 $f3->route('GET /menu/breakfast', function (){
