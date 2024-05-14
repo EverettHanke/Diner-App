@@ -5,12 +5,16 @@
  *  This belongs to the Model
  * */
 
-function getMeals()
+class DataLayer
 {
-    return array('breakfast','brunch' ,'lunch', 'diner', 'dessert');
+    static function getMeals()
+    {
+        return array('breakfast','brunch' ,'lunch', 'diner', 'dessert');
+    }
+
+    static function getCondiments()
+    {
+        return array('ketchup', 'mustard', 'sriracha', 'hot sauce');
+    }
 }
 
-function getCondiments()
-{
-    return array('ketchup', 'mustard', 'sriracha', 'hot sauce');
-}

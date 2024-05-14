@@ -9,8 +9,11 @@ error_reporting(E_ALL);
 
 //Require
 require_once ('vendor/autoload.php');
-require_once ('model/data-layer.php');
-require_once ('model/validate.php');
+
+//test the datalayer class
+//var_dump(DataLayer::getCondiments());
+//var_dump(DataLayer::getMeals());
+//require_once ('classes/order.php'); no longer needed as the composer handles it via autoload
 //var_dump(getMeals());
 //$testfood = '   xy   ';
 //echo validFood($testfood) ? "valid": "not valid";
@@ -25,6 +28,9 @@ this is a warning for future self.
 //run Fat Free
 $f3->run();
 */
+
+//$order = new Order('pad thai', 'lunch', ['soy sauce']);
+//var_dump($order);
 
 //Define a default route
 $f3->route('GET /', function (){
@@ -73,7 +79,7 @@ $f3->route('GET|POST /order1', function ($f3){
         $food ="";
         $meal = "";
 
-        if (validFood($_POST['food']))
+        if (Validator::validFood($_POST['food']))
         {
             $food = $_POST['food'];
         }
@@ -81,7 +87,7 @@ $f3->route('GET|POST /order1', function ($f3){
         {
             $f3->set('errors["food"]', 'Please enter a food');
         }
-        if (validMeal($_POST['meal']))
+        if (Validator::validMeal($_POST['meal']))
         {
             $meal = $_POST['meal'];
         }
@@ -89,6 +95,9 @@ $f3->route('GET|POST /order1', function ($f3){
         {
             $f3->set('errors["meal"]', 'Please select a meal');
         }
+            //add the data to the session array
+            $order = new Order($food, $meal);
+            $f3->set('SESSION.order', $order);
             //get data out of post array and put it in session array
             $f3->set('SESSION.food', $food);
             $f3->set('SESSION.meal', $meal);
@@ -106,7 +115,7 @@ $f3->route('GET|POST /order1', function ($f3){
     //before we render that page
     //get data from the model
     //and add it to the F3 hive
-    $meals = getMeals();
+    $meals = DataLayer::getMeals();
     $f3->set('meals', $meals);
 
     //Render a view page
@@ -125,6 +134,7 @@ $f3->route('GET|POST /order2', function ($f3){
         if (isset($_POST['conds']))
         {
             $condiments = implode(", ", $_POST['conds']);
+            $f3->get("SESSION.order")->setCondi($condiments);
             $f3->set('SESSION.condiments', $condiments);
 
             $f3->reroute('summary');
@@ -136,7 +146,7 @@ $f3->route('GET|POST /order2', function ($f3){
     }
 
     //use data layers
-    $condi = getCondiments();
+    $condi = DataLayer::getCondiments();
     $f3->set('condi', $condi);
 
     $view = new Template();
@@ -145,11 +155,15 @@ $f3->route('GET|POST /order2', function ($f3){
 
 //route for summary menu
 $f3->route('GET|POST /summary', function ($f3){
-    //echo '<h1>Diner</h1>';
-    var_dump($f3->get('SESSION'));
+    //write the data to the database
+
+
+
+    //var_dump($f3->get('SESSION.order'));
     //Render a view page
     $view = new Template();
     echo $view->render('views/summary.html');
+    session_destroy();
 });
 //run Fat Free
 $f3->run();

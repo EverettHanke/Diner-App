@@ -6,11 +6,14 @@
  * */
 
 //validate length of food ensuring that it is greater than 3
-function validFood($food)
+class Validator
 {
-    return strlen(trim($food)) >= 3;
-}
-function validMeal($meal)
-{
-    return in_array($meal, getMeals());
+    static function validFood($food): bool
+    {
+        return strlen(trim($food)) >= 3;
+    }
+    static function validMeal($meal): bool
+    {
+        return in_array($meal, DataLayer::getMeals());
+    }
 }
