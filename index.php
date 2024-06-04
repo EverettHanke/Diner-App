@@ -9,12 +9,16 @@ error_reporting(E_ALL);
 
 //Require
 require_once ('vendor/autoload.php');
-require_once ('controller/controller.php');
-
 
 //instantiate the F3 base class (F3 is fat free framework)
 $f3 = Base::instance();
 $con = new Controller($f3);
+$dataLayer = new DataLayer();
+
+$myOrder = new Order('breakfast', 'pancakes', 'maple syrup');
+$dataLayer->saveOrder($myOrder);
+$orders = $dataLayer->getOrder();
+var_dump($orders);
 
 //Define a default route
 $f3->route('GET /', function (){
@@ -27,125 +31,49 @@ $f3->route('GET /menu/breakfast', function (){
     //echo '<h1>Breakfast</h1>';
 
     //Render a view page
-    $view = new Template();
-    echo $view->render('views/breakfast-menu.html');
+    $GLOBALS['con']->breakfast();
+
 });
 //route for lunch menu
 $f3->route('GET /menu/lunch', function (){
     //echo '<h1>Lunch</h1>';
 
     //Render a view page
-    $view = new Template();
-    echo $view->render('views/lunch-menu.html');
+    $GLOBALS['con']->lunch();
 });
 //route for diner menu
 $f3->route('GET /menu/diner', function (){
     //echo '<h1>Diner</h1>';
 
     //Render a view page
-    $view = new Template();
-    echo $view->render('views/diner-menu.html');
+    $GLOBALS['con']->diner();
+
 });
 
 //route for order for part 1 menu
-$f3->route('GET|POST /order1', function ($f3){
+$f3->route('GET|POST /order1', function ($f3) {
     //echo '<h1>Order 1</h1>';
     //if the form has been posted
-    if ($_SERVER['REQUEST_METHOD'] == "POST")
-    {
-        echo "<p>You got here with the POST method</p>";
-        //lets vardump it
-        //var_dump($_POST);
-        //check if the data is valid
-        //get the data from post array
-        $food ="";
-        $meal = "";
-
-        if (Validator::validFood($_POST['food']))
-        {
-            $food = $_POST['food'];
-        }
-        else
-        {
-            $f3->set('errors["food"]', 'Please enter a food');
-        }
-        if (Validator::validMeal($_POST['meal']))
-        {
-            $meal = $_POST['meal'];
-        }
-        else
-        {
-            $f3->set('errors["meal"]', 'Please select a meal');
-        }
-            //add the data to the session array
-            $order = new Order($food, $meal);
-            $f3->set('SESSION.order', $order);
-            //get data out of post array and put it in session array
-            $f3->set('SESSION.food', $food);
-            $f3->set('SESSION.meal', $meal);
-            //send us to page 2
-        if (empty($f3->get('errors')))
-        {
-            $f3->reroute('order2');
-        }
-
-    }
-    else
-    {
-        echo "<p>You got her with the GET method</p>";
-    }
-    //before we render that page
-    //get data from the model
-    //and add it to the F3 hive
-    $meals = DataLayer::getMeals();
-    $f3->set('meals', $meals);
-
-    //Render a view page
-    $view = new Template();
-    echo $view->render('views/order1.html');
-});
+    $GLOBALS['con']->order1();
+}
+);
 
 //route for order form part 2 menu
-$f3->route('GET|POST /order2', function ($f3){
+$f3->route('GET|POST /order2', function ($f3) {
     //echo '<h1>Order 2</h1>';
     var_dump($f3->get('SESSION'));
     //Render a view page
-    if ($_SERVER['REQUEST_METHOD'] == "POST")
-    {
-        //$condiments = $_POST['conds'];
-        if (isset($_POST['conds']))
-        {
-            $condiments = implode(", ", $_POST['conds']);
-            $f3->get("SESSION.order")->setCondi($condiments);
-            $f3->set('SESSION.condiments', $condiments);
+    $GLOBALS['con']->order2();
 
-            $f3->reroute('summary');
-        }
-    }
-    else
-    {
-        echo "<p>here via GET</p>";
-    }
-
-    //use data layers
-    $condi = DataLayer::getCondiments();
-    $f3->set('condi', $condi);
-
-    $view = new Template();
-    echo $view->render('views/order2.html');
 });
 
 //route for summary menu
-$f3->route('GET|POST /summary', function ($f3){
+$f3->route('GET|POST /summary', function (){
     //write the data to the database
-
-
-
-    //var_dump($f3->get('SESSION.order'));
-    //Render a view page
-    $view = new Template();
-    echo $view->render('views/summary.html');
-    session_destroy();
+   $GLOBALS['con']->summary();
+});
+$f3->route('GET|POST /admin', function (){
+    $GLOBALS['con']->admin();
 });
 //run Fat Free
 $f3->run();
